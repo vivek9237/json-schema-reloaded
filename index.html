@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="shortcut icon" href="icons/faviconpump.ico" type="image/x-icon">
+
+	<title>JSON Schema to JSON Reloaded</title>
+	<link href="css/codemirror.css" rel="stylesheet">
+	<script src="js/codemirror.js"></script>
+	<link href="css/simplescrollbars.css" rel="stylesheet">
+	<script src="js/simplescrollbars.js"></script>
+	<script src="js/clipboard.js"></script>
+	<script src="js/panel.js"></script>
+	<script src="js/javascript.js"></script>
+	<script src="js/placeholder.js"></script>
+	<link href="css/jsonSchemaBuilder.css" rel="stylesheet">
+	<link href="css/dracula.css" rel="stylesheet">
+	<script src="js/fullscreen.js"></script>
+	<link href="css/fullscreen.css" rel="stylesheet">
+	<script type="text/javascript" src="js/lodash.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.9.5/jshint.min.js"></script>
+	<style>
+		.CodeMirror {
+			border: 1px solid black;
+		}
+
+		.lint-error {
+			font-family: arial;
+			font-size: 80%;
+			background: rgb(247, 192, 192);
+			color: #a00;
+			font-weight: bold;
+			padding: 2px 5px 3px;
+		}
+
+		.lint-error-icon {
+			color: white;
+			background-color: rgb(247, 190, 190);
+			font-weight: bold;
+			border-radius: 50%;
+			padding: 0 3px;
+			margin-right: 7px;
+		}
+	</style>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+		crossorigin="anonymous"></script>
+	<!-- JQuery CDN -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+</head>
+
+<body style="background-color:black;">
+	<div class="container-fluid" style="height:100%">
+		<div class="container">
+			<textarea id="inputJson" placeholder="Enter your JSON Schema here..."></textarea>
+			<div class="controls">
+				<label class="toggle">
+					<input id="minifyCheckbox" type="checkbox" checked>
+					<span class="slider"></span>
+					<span class="labels" data-on="Beautify" data-off="Minify"></span>
+				</label>
+				&nbsp;
+				&nbsp;
+				<label class="toggle">
+					<input id="wordwrapCheckbox" type="checkbox" checked>
+					<span class="slider"></span>
+					<span class="labels" data-on="Wrap" data-off="Unwrap"></span>
+				</label>
+				&nbsp;
+				<!-- <div class="custom-select" style="width:100px;">
+					<select id="connectiontype">
+						<option value="NONE">NONE</option>
+						<option value="REST">REST</option>
+						<option value="statusAndThresholdConfig">Status and Threshold Config</option>
+					</select>
+				</div>
+
+				&nbsp;
+				&nbsp; -->
+				<input type="text" id="appname" name="appname"
+					title="Enter your applicationtype name or connectiontype name" placeholder="Application"
+					style="width: 100px;">
+				&nbsp;&nbsp;
+				<input type="text" id="ansattr" name="ansattr" title="Enter your attribute name" placeholder="Attribute"
+					style="width: 100px;">
+				&nbsp;&nbsp;
+				<button type="button" id="generateReloadedSchema" onclick="generateReloadedSchema()"
+					class="controls__button controls__button--format">Generate</button>
+				&nbsp;
+
+				<button type="button" onclick="downloadMessageProps()"
+					class="controls__button controls__button--minify">msg.props ⬇️</button>
+				&nbsp;
+				&nbsp;
+
+				<!-- <button type="button" onclick="copyJSONSchema()"
+					class="controls__button controls__button--minify">Copy</button>
+				&nbsp;
+				&nbsp;
+				<button type="button" onclick="clearJsons()"
+					class="controls__button controls__button--minify">Clear</button> -->
+
+			</div>
+			<textarea id="jsonSchemaArea"
+				placeholder="The generated Reloaded JSON Schema will appear here..."></textarea>
+			<script type="text/javascript" src="js/jsonSchemaBuilder.js"></script>
+		</div>
+	</div>
+
+</body>
+
+</html>
