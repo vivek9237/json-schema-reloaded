@@ -86,10 +86,10 @@
 				<input type="text" id="appname" name="appname"
 					title="Enter your applicationtype name or connectiontype name" placeholder="Application"
 					style="width: 100px;">
-				&nbsp;&nbsp;
+				&nbsp;
 				<input type="text" id="ansattr" name="ansattr" title="Enter your attribute name" placeholder="Attribute"
 					style="width: 100px;">
-				&nbsp;&nbsp;
+				&nbsp;
 				<button type="button" id="generateReloadedSchema" onclick="generateReloadedSchema()"
 					class="controls__button controls__button--format">Generate</button>
 				&nbsp;
@@ -97,7 +97,11 @@
 				<button type="button" onclick="downloadMessageProps()"
 					class="controls__button controls__button--minify">msg.props ⬇️</button>
 				&nbsp;
+
+				<button type="button" onclick="downloadDbMigProps()"
+					class="controls__button controls__button--minify">db.migratn ⬇️</button>
 				&nbsp;
+
 
 				<!-- <button type="button" onclick="copyJSONSchema()"
 					class="controls__button controls__button--minify">Copy</button>
@@ -109,6 +113,8 @@
 			</div>
 			<textarea id="jsonSchemaArea"
 				placeholder="The generated Reloaded JSON Schema will appear here..."></textarea>
+			<a href="https://vivek9237.github.io/json-schema-generator/" target="_blank" rel="noopener noreferrer">Json
+				Schema Generator👿</a>
 			<script type="text/javascript" src="js/jsonSchemaBuilder.js"></script>
 		</div>
 	</div>

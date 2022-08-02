@@ -6,6 +6,7 @@ var staticAttributes;
 var renderSchema = true;
 
 var messagePropertiesContent = "";
+var dbMigrationQuery = "";
 
 
 function readAttributeToTitleDesc(file) {
@@ -243,6 +244,8 @@ var properties_key = "properties";
 function updateTitleAndDesc(obj, preString) {
 	messagePropertiesContent = messagePropertiesContent + preString + "." + title_key + " = " + obj[title_key] + "\n";
 	messagePropertiesContent = messagePropertiesContent + preString + "." + description_key + " = " + obj[description_key] + "\n";
+	dbMigrationQuery = dbMigrationQuery + preString + "." + title_key + "\ten\t" + obj[title_key] + "\n";
+	dbMigrationQuery = dbMigrationQuery + preString + "." + description_key + "\ten\t" + obj[description_key] + "\n";
 	obj[title_key] = preString + "." + title_key;
 	obj[description_key] = preString + "." + description_key;
 	var tempProp = obj[properties_key]
@@ -261,13 +264,14 @@ function updateTitleAndDesc(obj, preString) {
 function generateReloadedSchema() {
 	console.log("calling generateReloadedSchema");
 	messagePropertiesContent = "";
+	dbMigrationQuery = "";
 	renderSchema = true;
 	var inputJson = inputJsonEditor.getDoc().getValue();
 	console.log(inputJson);
 	const obj = JSON.parse(inputJson);
 	var preStringAOB = "AOB";
-	var preStringApplicationType = $('#appname').val();//"AD";
-	var preStringAttributeValue = $('#ansattr').val();//"URL";
+	var preStringApplicationType = $('#appname').val().trim();
+	var preStringAttributeValue = $('#ansattr').val().replace("externalconnattvalue.", "").trim();
 	var preString = preStringAOB + "." + preStringApplicationType + "." + preStringAttributeValue;
 	updatedObj = updateTitleAndDesc(obj, preString);
 	var generatedJsonSchema = JSON.stringify(updatedObj, null, 2);
@@ -275,6 +279,30 @@ function generateReloadedSchema() {
 		jsonSchemaEditor.getDoc().setValue(generatedJsonSchema);
 	}
 	console.log(messagePropertiesContent);
+}
+function downloadDbMigProps() {
+	// var hiddenElement = document.createElement('a');
+	// var preStringApplicationType = $('#appname').val();//"AD";
+	// var preStringAttributeValue = $('#ansattr').val();//"URL";
+	// hiddenElement.href = 'data:attachment/text,' + encodeURI(messagePropertiesContent);
+	// hiddenElement.target = '_blank';
+	// hiddenElement.download = preStringApplicationType + '_' + preStringAttributeValue + '_message.properties';
+	// hiddenElement.click();
+	var preStringApplicationType = $('#appname').val().trim();
+	var preStringAttributeValue = $('#ansattr').val().trim().replace("externalconnattvalue.", "");
+	if (preStringApplicationType == '' || preStringAttributeValue == '') {
+		alert("Application name and Attibute name cannot be blank!");
+	} else {
+		const element = document.createElement("a");
+		const file = new Blob([dbMigrationQuery], {
+			type: "text/plain",
+		});
+		element.href = URL.createObjectURL(file);
+
+		element.download = preStringApplicationType + '_' + preStringAttributeValue + '_dbmigration.txt';
+		document.body.appendChild(element);
+		element.click();
+	}
 }
 function downloadMessageProps() {
 	// var hiddenElement = document.createElement('a');
@@ -284,8 +312,8 @@ function downloadMessageProps() {
 	// hiddenElement.target = '_blank';
 	// hiddenElement.download = preStringApplicationType + '_' + preStringAttributeValue + '_message.properties';
 	// hiddenElement.click();
-	var preStringApplicationType = $('#appname').val();
-	var preStringAttributeValue = $('#ansattr').val();
+	var preStringApplicationType = $('#appname').val().trim();
+	var preStringAttributeValue = $('#ansattr').val().trim().replace("externalconnattvalue.", "");
 	if (preStringApplicationType == '' || preStringAttributeValue == '') {
 		alert("Application name and Attibute name cannot be blank!");
 	} else {
