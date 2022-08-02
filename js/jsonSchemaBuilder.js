@@ -242,8 +242,8 @@ var description_key = "description";
 var properties_key = "properties";
 
 function updateTitleAndDesc(obj, preString) {
-	messagePropertiesContent = messagePropertiesContent + preString + "." + title_key + " = " + obj[title_key] + "\n";
-	messagePropertiesContent = messagePropertiesContent + preString + "." + description_key + " = " + obj[description_key] + "\n";
+	messagePropertiesContent = messagePropertiesContent + preString + "." + title_key + "=" + obj[title_key] + "\n";
+	messagePropertiesContent = messagePropertiesContent + preString + "." + description_key + "=" + obj[description_key] + "\n";
 	dbMigrationQuery = dbMigrationQuery + preString + "." + title_key + "\ten\t" + obj[title_key] + "\n";
 	dbMigrationQuery = dbMigrationQuery + preString + "." + description_key + "\ten\t" + obj[description_key] + "\n";
 	obj[title_key] = preString + "." + title_key;
