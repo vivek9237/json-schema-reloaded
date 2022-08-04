@@ -241,13 +241,21 @@ var title_key = "title";
 var description_key = "description";
 var properties_key = "properties";
 
-function updateTitleAndDesc(obj, preString) {
-	messagePropertiesContent = messagePropertiesContent + preString + "." + title_key + "=" + obj[title_key] + "\n";
-	messagePropertiesContent = messagePropertiesContent + preString + "." + description_key + "=" + obj[description_key] + "\n";
-	dbMigrationQuery = dbMigrationQuery + preString + "." + title_key + "\ten\t" + obj[title_key] + "\n";
-	dbMigrationQuery = dbMigrationQuery + preString + "." + description_key + "\ten\t" + obj[description_key] + "\n";
-	obj[title_key] = preString + "." + title_key;
-	obj[description_key] = preString + "." + description_key;
+function updateTitleAndDesc(obj, preString, attributekey) {
+	if(attributekey!=obj[title_key]){
+		messagePropertiesContent = messagePropertiesContent + preString + "." + title_key + "=" + obj[title_key] + "\n";
+		dbMigrationQuery = dbMigrationQuery + preString + "." + title_key + "\t" + obj[title_key] + "\n";
+		obj[title_key] = preString + "." + title_key;
+	}
+	
+
+	if (!(obj[description_key] == undefined || obj[description_key] == null || obj[description_key] == "")) {
+		messagePropertiesContent = messagePropertiesContent + preString + "." + description_key + "=" + obj[description_key] + "\n";
+		dbMigrationQuery = dbMigrationQuery + preString + "." + description_key + "\t" + obj[description_key] + "\n";
+		obj[description_key] = preString + "." + description_key;
+	}
+
+
 	var tempProp = obj[properties_key]
 	if (!obj.hasOwnProperty(properties_key)) {
 		return obj;
@@ -255,7 +263,7 @@ function updateTitleAndDesc(obj, preString) {
 		console.log(tempProp)
 		for (var attributeName in tempProp) {
 			var updatedPreString = preString + "." + attributeName
-			tempProp[attributeName] = updateTitleAndDesc(tempProp[attributeName], updatedPreString);
+			tempProp[attributeName] = updateTitleAndDesc(tempProp[attributeName], updatedPreString, attributeName);
 		}
 		obj[properties_key] = tempProp;
 		return obj;
@@ -273,7 +281,7 @@ function generateReloadedSchema() {
 	var preStringApplicationType = $('#appname').val().trim();
 	var preStringAttributeValue = $('#ansattr').val().replace("externalconnattvalue.", "").trim();
 	var preString = preStringAOB + "." + preStringApplicationType + "." + preStringAttributeValue;
-	updatedObj = updateTitleAndDesc(obj, preString);
+	updatedObj = updateTitleAndDesc(obj, preString, "");
 	var generatedJsonSchema = JSON.stringify(updatedObj, null, 2);
 	if (renderSchema) {
 		jsonSchemaEditor.getDoc().setValue(generatedJsonSchema);
